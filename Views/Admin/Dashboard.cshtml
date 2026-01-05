@@ -1,0 +1,102 @@
+@model IEnumerable<ParfumerieOnline.Models.Order>
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container">
+    <h1>Tableau de Bord Admin</h1>
+    
+    <div style="display: flex; gap: 20px; margin-bottom: 2rem;">
+        <a asp-action="Products" class="btn">Gérer les Produits</a>
+    </div>
+
+    <div style="display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem;">
+        <div style="flex: 1; background: #fff; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+            <h3>Statistiques</h3>
+            <p><strong>Total Commandes :</strong> @ViewBag.TotalOrders</p>
+            <p><strong>Chiffre d'Affaires :</strong> @ViewBag.TotalRevenue?.ToString("C")</p>
+        </div>
+        <div style="flex: 2; background: #fff; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+            <h3>Évolution des Ventes (7 derniers jours)</h3>
+            <canvas id="salesChart" style="max-height: 200px;"></canvas>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var ctx = document.getElementById('salesChart').getContext('2d');
+            var salesChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: @Json.Serialize(ViewBag.ChartLabels),
+                    datasets: [{
+                        label: 'Chiffre d\'affaires (€)',
+                        data: @Json.Serialize(ViewBag.ChartData),
+                        backgroundColor: 'rgba(212, 175, 55, 0.2)',
+                        borderColor: 'rgba(212, 175, 55, 1)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) { return value + ' €'; }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
+    <h3>Dernières Commandes</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Client</th>
+                <th>Date</th>
+                <th>Total</th>
+                <th>Statut</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>#@item.Id</td>
+                    <td>@item.User?.Nom<br><small>@item.User?.Email</small></td>
+                    <td>@item.DateCommande.ToString("g")</td>
+                    <td>@item.Total.ToString("C")</td>
+                    <td>@item.Statut</td>
+                    <td>
+                        <form asp-action="UpdateOrderStatus" method="post" style="display: flex; gap: 5px;">
+                            <input type="hidden" name="id" value="@item.Id">
+                            <select name="status" style="padding: 5px;">
+                                <!option value="en_attente" @(item.Statut == "en_attente" ? "selected" : "")>En attente</!option>
+                                <!option value="validee" @(item.Statut == "validee" ? "selected" : "")>Validée</!option>
+                                <!option value="expediee" @(item.Statut == "expediee" ? "selected" : "")>Expédiée</!option>
+                                <!option value="livree" @(item.Statut == "livree" ? "selected" : "")>Livrée</!option>
+                                <!option value="annulee" @(item.Statut == "annulee" ? "selected" : "")>Annulée</!option>
+                            </select>
+                            <button type="submit" class="btn" style="padding: 5px 10px; font-size: 0.8rem;">OK</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

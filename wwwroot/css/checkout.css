@@ -1,0 +1,118 @@
+:root {
+    --gold-primary: #D4AF37;
+    --gold-hover: #B4941F;
+    --text-dark: #1A1A1A;
+    --text-muted: #6C757D;
+    --bg-light: #F8F9FA;
+    --white: #FFFFFF;
+    --input-bg: #FFFFFF;
+    --input-border: #E0E0E0;
+    --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+body {
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+}
+
+.checkout-container {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+}
+
+.page-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 2rem;
+    text-align: center;
+    position: relative;
+}
+
+.page-title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background-color: var(--gold-primary);
+    margin: 1rem auto 0;
+}
+
+.card-luxury {
+    background: var(--white);
+    border: none;
+    border-radius: 16px;
+    box-shadow: var(--shadow-soft);
+    padding: 2rem;
+    height: 100%;
+    transition: transform 0.3s ease;
+}
+
+.card-luxury:hover {
+    transform: translateY(-5px);
+}
+
+.form-label-floating {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.form-control-luxury {
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background-color: var(--input-bg);
+}
+
+.form-control-luxury:focus {
+    border-color: var(--gold-primary);
+    box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1);
+}
+
+.btn-gold {
+    background-color: var(--gold-primary);
+    color: var(--white);
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.btn-gold:hover {
+    background-color: var(--gold-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+}
+
+.summary-details {
+    margin-top: 1.5rem;
+    border-top: 1px solid var(--input-border);
+    padding-top: 1.5rem;
+}
+
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-top: 1rem;
+}
+
+.secure-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-top: 1.5rem;
+}

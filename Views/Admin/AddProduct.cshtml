@@ -1,0 +1,52 @@
+@model ParfumerieOnline.Models.Product
+@{
+    ViewData["Title"] = "Ajouter Produit";
+}
+
+<div class="container">
+    <div class="form-container" style="max-width: 600px;">
+        <h2>Ajouter un Produit</h2>
+        
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger">@ViewBag.Error</div>
+        }
+        
+        <form asp-action="AddProduct" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label>Nom du produit</label>
+                <input asp-for="Nom" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Description</label>
+                <textarea asp-for="Description" rows="4"></textarea>
+            </div>
+            
+            <div style="display: flex; gap: 1rem;">
+                <div class="form-group" style="flex: 1;">
+                    <label>Prix (€)</label>
+                    <input asp-for="Prix" type="number" step="0.01" required>
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label>Stock</label>
+                    <input asp-for="Stock" type="number" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Catégorie</label>
+                <select asp-for="CategorieId" asp-items="ViewBag.Categories" required>
+                    <option value="">-- Sélectionner --</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Image</label>
+                <input type="file" name="imageFile" accept="image/*">
+            </div>
+            
+            <button type="submit" class="btn">Enregistrer</button>
+        </form>
+    </div>
+</div>

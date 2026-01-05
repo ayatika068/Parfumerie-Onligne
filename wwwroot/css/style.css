@@ -1,0 +1,554 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;700&display=swap');
+
+:root {
+    --primary-color: #d4af37;
+    /* Gold */
+    --primary-dark: #b5952f;
+    --secondary-color: #1a1a1a;
+    /* Almost Black */
+    --light-bg: #f8f9fa;
+    --text-color: #333;
+    --white: #ffffff;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--light-bg);
+    color: var(--text-color);
+    font-family: 'Lato', sans-serif;
+    line-height: 1.6;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Playfair Display', serif;
+    color: var(--secondary-color);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: var(--transition);
+}
+
+/* Header */
+header {
+    background-color: var(--white);
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+nav {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--secondary-color);
+    letter-spacing: 1px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 25px;
+    align-items: center;
+}
+
+.nav-links a {
+    color: var(--secondary-color);
+    font-weight: 500;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.nav-links a:hover {
+    color: var(--primary-color);
+}
+
+/* Hero Section */
+.hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1615634260167-c8cdede054de?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--white);
+}
+
+.hero h1 {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.hero p {
+    font-size: 1.2rem;
+    font-weight: 300;
+    margin-bottom: 2rem;
+}
+
+.btn {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: var(--primary-color);
+    color: var(--white);
+    border-radius: 30px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: none;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+}
+
+.btn:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+}
+
+.btn-outline-secondary {
+    background-color: transparent;
+    border: 2px solid var(--secondary-color);
+    color: var(--secondary-color);
+    box-shadow: none;
+}
+
+.btn-outline-secondary:hover {
+    background-color: var(--secondary-color);
+    color: var(--white);
+}
+
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 3rem auto;
+    padding: 0 2rem;
+}
+
+/* Products Grid */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2.5rem;
+}
+
+.product-card {
+    background: var(--white);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.product-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.product-card:hover .product-image {
+    transform: scale(1.05);
+}
+
+.product-info {
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.product-info h3 {
+    font-size: 1.2rem;
+    margin: 0.5rem 0;
+}
+
+.product-price {
+    color: var(--primary-color);
+    font-weight: 700;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    font-family: 'Playfair Display', serif;
+}
+
+/* Forms */
+.form-container {
+    max-width: 450px;
+    margin: 4rem auto;
+    background: var(--white);
+    padding: 3rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #e1e1e1;
+    border-radius: 8px;
+    transition: var(--transition);
+    font-family: 'Lato', sans-serif;
+}
+
+.form-group input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+}
+
+/* Tables */
+.table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+    margin-bottom: 2rem;
+}
+
+.table th {
+    background-color: transparent;
+    color: #666;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    padding: 1rem;
+    border-bottom: 2px solid #eee;
+}
+
+.table td {
+    background: var(--white);
+    padding: 1.5rem;
+    vertical-align: middle;
+}
+
+.table tr td:first-child {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.table tr td:last-child {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+
+/* Shop Page Specifics */
+.shop-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 2rem 0;
+}
+
+.shop-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.shop-header p {
+    font-style: italic;
+    color: #666;
+    font-family: 'Lato', sans-serif;
+}
+
+/* Sidebar Styling */
+.filter-sidebar {
+    position: sticky;
+    top: 100px;
+    height: fit-content;
+}
+
+.filter-card {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.filter-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.filter-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background-color: var(--primary-color);
+}
+
+.filter-label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #333;
+    margin-bottom: 1rem;
+    letter-spacing: 1px;
+}
+
+.custom-select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #eee;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    cursor: pointer;
+}
+
+/* New Product Card Styling */
+.product-card {
+    text-align: center;
+    padding: 0;
+    border: none;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.product-image-container {
+    background-color: #f4f4f4;
+    padding: 2rem;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.product-image {
+    max-height: 100%;
+    width: auto;
+    object-fit: contain;
+    mix-blend-mode: multiply;
+    /* Helps blend if image has white bg */
+}
+
+.product-content {
+    padding: 1.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.product-category {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.8rem;
+    color: #888;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+.product-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #1a1a1a;
+}
+
+.product-price {
+    color: var(--primary-color);
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+.product-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.btn-details {
+    padding: 10px 25px;
+    border: 1px solid #1a1a1a;
+    background: transparent;
+    color: #1a1a1a;
+    border-radius: 25px;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    transition: all 0.3s;
+}
+
+.btn-details:hover {
+    background: #1a1a1a;
+    color: #fff;
+}
+
+.btn-add {
+    padding: 10px 25px;
+    background-color: var(--primary-color);
+    /* Gold */
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    transition: all 0.3s;
+}
+
+.btn-add:hover {
+    background-color: var(--primary-dark);
+}
+
+/* --- New Animations --- */
+
+/* Keyframes */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Global Fade In */
+body {
+    animation: fadeIn 0.8s ease-out;
+}
+
+/* Hero Section Animations */
+.hero h1 {
+    animation: slideUp 1s ease-out 0.2s backwards;
+}
+
+.hero p {
+    animation: slideUp 1s ease-out 0.4s backwards;
+}
+
+.hero .btn {
+    animation: slideUp 1s ease-out 0.6s backwards, pulse 2s infinite 1.6s;
+}
+
+/* Navbar Animations */
+.nav-links a {
+    animation: slideDown 0.5s ease-out backwards;
+}
+
+.nav-links a:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.nav-links a:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.nav-links a:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.nav-links a:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+/* Enhanced Hover for Shop Page Items */
+.shop-header h1 {
+    animation: slideUp 0.8s ease-out;
+}
+
+.filter-sidebar {
+    animation: fadeIn 1s ease-out 0.3s backwards;
+}
+
+/* Additional Keyframes */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+    }
+
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5);
+    }
+
+    100% {
+        transform: scale(1);
+        box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+    }
+}

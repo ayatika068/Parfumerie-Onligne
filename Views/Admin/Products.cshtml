@@ -1,0 +1,48 @@
+@model IEnumerable<ParfumerieOnline.Models.Product>
+@{
+    ViewData["Title"] = "Gestion Produits";
+}
+
+<div class="container">
+    <div style="display: flex; justify-content: space-between; align_items: center; margin-bottom: 1rem;">
+        <h1>Gestion des Produits</h1>
+        <a asp-action="AddProduct" class="btn">Ajouter un Produit</a>
+    </div>
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Image</th>
+                <th>Nom</th>
+                <th>Catégorie</th>
+                <th>Prix</th>
+                <th>Stock</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.Image))
+                        {
+                            <img src="~/uploads/@item.Image" width="50" height="50" style="object-fit: cover;">
+                        }
+                    </td>
+                    <td>@item.Nom</td>
+                    <td>@item.Category?.Nom</td>
+                    <td>@item.Prix.ToString("C")</td>
+                    <td>@item.Stock</td>
+                    <td>
+                        <a asp-action="DeleteProduct" asp-route-id="@item.Id" onclick="return confirm('Êtes-vous sûr ?')" style="color: red;">
+                            <i class="fas fa-trash"></i> Supprimer
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,166 @@
+@model ParfumerieOnline.Models.PaymentViewModel
+@{
+    ViewData["Title"] = "Paiement Sécurisé";
+    decimal total = ViewBag.Total;
+}
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Metropolis:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="~/css/checkout.css" />
+
+<div class="container checkout-container">
+    <h2 class="page-title">Finalisation de la Commande</h2>
+
+    <div class="row g-5">
+        <!-- Formulaire de Paiement -->
+        <div class="col-lg-7">
+            <div class="card-luxury">
+                <h4 class="mb-4" style="font-family: 'Playfair Display', serif;">Détails du Paiement</h4>
+                
+                @if (ViewBag.Errors != null)
+                {
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach (var error in ViewBag.Errors)
+                            {
+                                <li>@error</li>
+                            }
+                        </ul>
+                    </div>
+                }
+
+                <form asp-action="ProcessPayment" id="paymentForm" method="post">
+                    <div class="mb-5">
+                        <label class="form-label-floating mb-3">Mode de Paiement</label>
+                        <div class="payment-methods gap-3 d-flex flex-column">
+                            <div class="form-check p-3 border rounded bg-light">
+                                <input class="form-check-input" type="radio" asp-for="PaymentMethod" value="Card" id="paymentCard" checked>
+                                <label class="form-check-label w-100 d-flex justify-content-between align-items-center" for="paymentCard">
+                                    <span><i class="fas fa-credit-card me-2"></i> Carte Bancaire</span>
+                                    <span class="text-muted small">Visa, Mastercard</span>
+                                </label>
+                            </div>
+                            <div class="form-check p-3 border rounded bg-light">
+                                <input class="form-check-input" type="radio" asp-for="PaymentMethod" value="COD" id="paymentCOD">
+                                <label class="form-check-label w-100 d-flex justify-content-between align-items-center" for="paymentCOD">
+                                    <span><i class="fas fa-money-bill-wave me-2"></i> Paiement à la livraison</span>
+                                    <span class="text-muted small">En espèces</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="card-details">
+                        <div class="mb-4">
+                            <label asp-for="CardHolderName" class="form-label-floating">Nom du titulaire</label>
+                            <input asp-for="CardHolderName" class="form-control form-control-luxury" placeholder="e.g. Jean Dupont" />
+                            <span asp-validation-for="CardHolderName" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="CardNumber" class="form-label-floating">Numéro de carte</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0"><i class="fas fa-credit-card text-muted"></i></span>
+                                <input asp-for="CardNumber" class="form-control form-control-luxury border-start-0 ps-0" placeholder="0000 0000 0000 0000" />
+                            </div>
+                            <span asp-validation-for="CardNumber" class="text-danger small"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label asp-for="ExpiryDate" class="form-label-floating">Date d'expiration</label>
+                                <input asp-for="ExpiryDate" class="form-control form-control-luxury" placeholder="MM/YY" />
+                                <span asp-validation-for="ExpiryDate" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label asp-for="CVV" class="form-label-floating">CVV</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white border-end-0"><i class="fas fa-lock text-muted"></i></span>
+                                    <input asp-for="CVV" class="form-control form-control-luxury border-start-0 ps-0" placeholder="123" />
+                                </div>
+                                <span asp-validation-for="CVV" class="text-danger small"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-gold btn-lg shadow-sm w-100">
+                            <span id="payButtonText">Payer @total.ToString("C")</span>
+                        </button>
+                        <div class="text-center mt-3">
+                             <a asp-controller="Cart" asp-action="Index" class="text-muted text-decoration-none small">
+                                 <i class="fas fa-arrow-left me-1"></i> Retour au Panier
+                             </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Récapitulatif -->
+        <div class="col-lg-5">
+            <div class="card-luxury bg-white">
+                <h4 class="mb-4" style="font-family: 'Playfair Display', serif;">Récapitulatif</h4>
+                
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted">Sous-total</span>
+                    <span class="fw-bold">@total.ToString("C")</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted">Livraison</span>
+                    <span class="text-success">Gratuite</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted">Taxes (inclus)</span>
+                    <span>0,00 €</span>
+                </div>
+
+                <div class="summary-details">
+                    <div class="total-row">
+                        <span>Total</span>
+                        <span style="color: var(--gold-primary);">@total.ToString("C")</span>
+                    </div>
+                </div>
+
+                <div class="secure-badge mt-4 p-3 bg-light rounded text-center">
+                    <div>
+                        <i class="fas fa-shield-alt fa-2x mb-2 text-muted"></i>
+                        <p class="mb-0 small text-muted">Paiement 100% Sécurisé. Vos données sont chiffrées SSL.</p>
+                    </div>
+                </div>
+                
+                 <div class="alert alert-warning mt-3 small border-0 bg-opacity-10 bg-warning text-warning-emphasis">
+                    <i class="fas fa-info-circle me-1"></i> Mode Simulation : Aucune carte ne sera débitée.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const cardRadio = document.getElementById("paymentCard");
+            const codRadio = document.getElementById("paymentCOD");
+            const cardDetails = document.getElementById("card-details");
+            const payButtonText = document.getElementById("payButtonText");
+
+            function toggleCardDetails() {
+                if (cardRadio.checked) {
+                    cardDetails.style.display = "block";
+                    payButtonText.innerText = "Payer @total.ToString("C")";
+                } else {
+                    cardDetails.style.display = "none";
+                    payButtonText.innerText = "Confirmer la commande";
+                }
+            }
+
+            // Initial state
+            toggleCardDetails();
+
+            // Event listeners
+            cardRadio.addEventListener("change", toggleCardDetails);
+            codRadio.addEventListener("change", toggleCardDetails);
+        });
+    </script>
+}

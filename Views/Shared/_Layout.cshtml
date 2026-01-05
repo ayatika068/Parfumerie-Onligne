@@ -1,0 +1,288 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Misk Parfumerie</title>
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Global Search Styles */
+        .search-container {
+            position: relative;
+            margin-right: 2rem;
+            flex-grow: 0;
+            transition: all 0.3s ease;
+        }
+
+        .search-container.active {
+            width: 250px;
+        }
+
+        .search-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-input-wrapper input {
+            width: 0;
+            padding: 10px 0;
+            border: none;
+            background: transparent;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            outline: none;
+            opacity: 0;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .search-container.active input {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            border: 1px solid #ddd;
+            opacity: 1;
+            cursor: text;
+            pointer-events: auto; /* Ensure clickable */
+            background: white; /* Ensure visible background */
+        }
+        
+        .search-input-wrapper input:focus {
+            border-color: var(--gold-primary, #C5A059);
+            box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            color: #333;
+            cursor: pointer;
+            z-index: 2;
+            font-size: 1.1rem;
+            padding: 10px;
+        }
+
+        .search-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            z-index: 1000;
+            margin-top: 10px;
+            display: none;
+            overflow: hidden;
+            border: 1px solid #eee;
+        }
+
+        .search-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .search-item:last-child {
+            border-bottom: none;
+        }
+
+        .search-item:hover {
+            background-color: #f9f9f9;
+        }
+
+        .search-item img {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-right: 15px;
+        }
+
+        .search-item-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .search-item-name {
+            font-weight: 500;
+            color: #333;
+            font-size: 0.95rem;
+        }
+
+        .search-item-price {
+            font-size: 0.85rem;
+            color: var(--gold-primary, #C5A059);
+            font-weight: 600;
+        }
+
+        /* Adjust Nav Layout */
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a asp-controller="Home" asp-action="Index" class="logo">Misk Parfumerie</a>
+                <div class="nav-links">
+                    <a asp-controller="Home" asp-action="Index">Accueil</a>
+                    <a asp-controller="Shop" asp-action="Index">Boutique</a>
+                    <a asp-controller="Cart" asp-action="Index" style="position: relative;">
+                        <i class="fas fa-shopping-cart"></i> Panier
+                        <span id="cart-count" class="badge" style="display: none;">0</span>
+                    </a>
+                    
+                    <div class="search-container" id="expandingSearch">
+                        <div class="search-input-wrapper">
+                            <i class="fas fa-search search-icon" id="searchIconBtn"></i>
+                            <input type="text" id="globalSearchInput" placeholder="Rechercher...">
+                        </div>
+                        <div id="searchDropdown" class="search-dropdown"></div>
+                    </div>
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        @if (User.IsInRole("admin"))
+                        {
+                            <a asp-controller="Admin" asp-action="Dashboard">Admin</a>
+                        }
+                        <a asp-controller="Auth" asp-action="Logout">Déconnexion</a>
+                    }
+                    else
+                    {
+                        <a asp-controller="Auth" asp-action="Login">Connexion</a>
+                    }
+                </div>
+        </nav>
+    </header>
+    
+    <main role="main">
+        @RenderBody()
+    </main>
+
+    <!-- Toast Container -->
+    <div id="toast-container" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;"></div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; @DateTime.Now.Year - Misk Parfumerie.</p>
+        </div>
+    </footer>
+    
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        // Initialize Cart Count
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/Cart/GetCartCount')
+                .then(response => response.json())
+                .then(data => {
+                    updateCartBadge(data.count);
+                });
+        });
+
+        function updateCartBadge(count) {
+            const badge = document.getElementById('cart-count');
+            if (count > 0) {
+                badge.innerText = count;
+                badge.style.display = 'inline-block';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('globalSearchInput');
+            const searchDropdown = document.getElementById('searchDropdown');
+            const searchContainer = document.getElementById('expandingSearch');
+            const searchIcon = document.getElementById('searchIconBtn');
+            let debounceTimer;
+
+            // Toggle expansion on icon click
+            searchIcon.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // If closing
+                if (searchContainer.classList.contains('active')) {
+                     // If user clicking icon again to close?
+                     // Optional: keep it open if focused? No, toggle is better.
+                     searchContainer.classList.remove('active');
+                     searchInput.value = '';
+                     searchDropdown.style.display = 'none';
+                } else {
+                    // Opening
+                    searchContainer.classList.add('active');
+                    // Small timeout to ensure transition starts/element is visible before focusing
+                    setTimeout(() => {
+                        searchInput.focus();
+                    }, 50);
+                }
+            });
+
+            // Prevent input click from closing
+            searchInput.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+
+            searchInput.addEventListener('input', function() {
+                clearTimeout(debounceTimer);
+                const query = this.value;
+
+                if (query.length < 2) {
+                    searchDropdown.style.display = 'none';
+                    return;
+                }
+
+                debounceTimer = setTimeout(() => {
+                    fetch(`/Shop/SearchPreview?query=${encodeURIComponent(query)}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            searchDropdown.innerHTML = '';
+                            if (data.length > 0) {
+                                searchDropdown.style.display = 'block';
+                                data.forEach(product => {
+                                    const item = document.createElement('div');
+                                    item.className = 'search-item';
+                                    item.onclick = (e) => {
+                                        e.stopPropagation(); // Prevent closing
+                                        window.location.href = `/Shop/Details/${product.id}`;
+                                    };
+                                    item.innerHTML = `
+                                        <img src="${product.image}" alt="${product.nom}">
+                                        <div class="search-item-info">
+                                            <div class="search-item-name">${product.nom}</div>
+                                            <div class="search-item-price">${product.prix}DH</div>
+                                        </div>
+                                    `;
+                                    searchDropdown.appendChild(item);
+                                });
+                            } else {
+                                searchDropdown.style.display = 'none';
+                            }
+                        });
+                }, 300);
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!searchContainer.contains(e.target)) {
+                    searchDropdown.style.display = 'none';
+                    if (searchInput.value === '') {
+                         searchContainer.classList.remove('active');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+@model int
+@{
+    ViewData["Title"] = "Confirmation de Commande";
+}
+
+<div class="container" style="text-align: center; margin-top: 4rem;">
+    <div style="color: green; font-size: 4rem; margin-bottom: 1rem;">
+        <i class="fas fa-check-circle"></i>
+    </div>
+    <h1>Merci pour votre commande !</h1>
+
+    <div style="margin-top: 2rem;">
+        <a asp-controller="Home" asp-action="Index" class="btn">Retour à l'accueil</a>
+        <a asp-action="Invoice" asp-route-id="@Model" class="btn btn-gold" style="margin-left: 10px; background-color: #C5A059; color: white;">Voir la Facture</a>
+    </div>
+</div>

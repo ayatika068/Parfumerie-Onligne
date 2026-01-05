@@ -1,0 +1,63 @@
+@model List<ParfumerieOnline.Controllers.CartItemViewModel>
+@{
+    ViewData["Title"] = "Panier";
+    decimal total = Model.Sum(i => i.Prix * i.Quantite);
+}
+
+<div class="container">
+    <h1>Votre Panier</h1>
+    
+    @if (Model.Count == 0)
+    {
+        <p>Votre panier est vide. <a asp-controller="Shop" asp-action="Index">Continuer vos achats</a>.</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Produit</th>
+                    <th>Prix</th>
+                    <th>Quantité</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                @if (!string.IsNullOrEmpty(item.Image))
+                                {
+                                    <img src="~/uploads/@item.Image" width="50" height="50" style="object-fit: cover;">
+                                }
+                                @item.Nom
+                            </div>
+                        </td>
+                        <td>@item.Prix.ToString("C")</td>
+                        <td>@item.Quantite</td>
+                        <td>@((item.Prix * item.Quantite).ToString("C"))</td>
+                        <td>
+                            <a asp-controller="Cart" asp-action="Remove" asp-route-productId="@item.ProduitId" style="color: red;">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" style="text-align: right; font-weight: bold;">Total :</td>
+                    <td style="font-weight: bold; font-size: 1.2rem;">@total.ToString("C")</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+        
+        <div style="text-align: right;">
+            <a asp-controller="Checkout" asp-action="Index" class="btn">Valider la Commande</a>
+        </div>
+    }
+</div>

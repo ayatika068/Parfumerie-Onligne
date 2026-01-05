@@ -1,0 +1,43 @@
+@model ParfumerieOnline.Models.Product
+@{
+    ViewData["Title"] = Model.Nom;
+}
+
+<div class="container">
+    <div style="display: flex; gap: 3rem; margin-top: 2rem; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 300px;">
+            @if (!string.IsNullOrEmpty(Model.Image))
+            {
+                <img src="~/uploads/@Model.Image" alt="@Model.Nom" style="width: 100%; border-radius: 8px;">
+            }
+            else
+            {
+                <img src="https://via.placeholder.com/500x500?text=Parfum" alt="No Image" style="width: 100%; border-radius: 8px;">
+            }
+        </div>
+        
+        <div style="flex: 1; min-width: 300px;">
+            <small>@Model.Category?.Nom</small>
+            <h1 style="margin: 0.5rem 0;">@Model.Nom</h1>
+            <p class="product-price" style="font-size: 2rem;">@Model.Prix.ToString("C")</p>
+            
+            <p style="margin: 2rem 0; color: #666;">@Model.Description</p>
+            
+            @if (Model.Stock > 0)
+            {
+                <form asp-controller="Cart" asp-action="Add" method="post">
+                    <input type="hidden" name="productId" value="@Model.Id">
+                    <div style="margin-bottom: 1rem;">
+                        <label for="quantity">Quantité :</label>
+                        <input type="number" name="quantity" id="quantity" value="1" min="1" max="@Model.Stock" style="width: 80px; padding: 5px;">
+                    </div>
+                    <button type="submit" class="btn">Ajouter au Panier</button>
+                </form>
+            }
+            else
+            {
+                <p style="color: red; font-weight: bold;">Rupture de stock</p>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,35 @@
+@model ParfumerieOnline.Models.User
+@{
+    ViewData["Title"] = "Inscription";
+}
+
+<div class="container">
+    <div class="form-container">
+        <h2 style="text-align: center; margin-bottom: 1.5rem;">Inscription</h2>
+        
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger">@ViewBag.Error</div>
+        }
+
+        <form asp-action="Register" method="post">
+            <div class="form-group">
+                <label>Nom Complet</label>
+                <input asp-for="Nom" required>
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input asp-for="Email" type="email" required>
+            </div>
+            <div class="form-group">
+                <label>Mot de passe</label>
+                <input asp-for="MotDePasse" type="password" required>
+            </div>
+            <button type="submit" class="btn" style="width: 100%;">S'inscrire</button>
+        </form>
+        
+        <p style="margin-top: 1rem; text-align: center;">
+            Déjà un compte ? <a asp-action="Login" style="color: var(--primary-color);">Se connecter</a>
+        </p>
+    </div>
+</div>

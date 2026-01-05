@@ -1,0 +1,30 @@
+@{
+    ViewData["Title"] = "Connexion";
+}
+
+<div class="container">
+    <div class="form-container">
+        <h2 style="text-align: center; margin-bottom: 1.5rem;">Connexion</h2>
+        
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger">@ViewBag.Error</div>
+        }
+
+        <form asp-action="Login" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label>Mot de passe</label>
+                <input type="password" name="password" required>
+            </div>
+            <button type="submit" class="btn" style="width: 100%;">Se Connecter</button>
+        </form>
+        
+        <p style="margin-top: 1rem; text-align: center;">
+            Pas encore de compte ? <a asp-action="Register" style="color: var(--primary-color);">S'inscrire</a>
+        </p>
+    </div>
+</div>

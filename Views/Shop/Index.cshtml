@@ -1,0 +1,77 @@
+@model IEnumerable<ParfumerieOnline.Models.Product>
+@{
+    ViewData["Title"] = "Boutique";
+}
+
+<div class="container">
+    <div class="shop-header">
+        <h1>Notre Boutique</h1>
+        <p>Découvrez notre collection exclusive de parfums de luxe</p>
+    </div>
+    
+    <div class="shop-layout" style="display: flex; gap: 3rem; margin-top: 2rem;">
+        <!-- Sidebar Filters -->
+        <aside class="filter-sidebar" style="width: 280px; flex-shrink: 0;">
+            <div class="filter-card">
+                <h3 class="filter-title">Filtres</h3>
+                
+                <div class="mb-4">
+                    <label class="filter-label">CATÉGORIE</label>
+                    <select id="categoryFilter" class="custom-select" onchange="filterProducts()">
+                        <option value="">Toutes les catégories</option>
+                        @if (ViewBag.Categories != null)
+                        {
+                            foreach (var category in ViewBag.Categories)
+                            {
+                                <option value="@category.Id">@category.Nom</option>
+                            }
+                        }
+                    </select>
+                </div>
+                
+                <div class="mb-3">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <label class="filter-label" style="margin-bottom: 0;">PRIX MAXIMUM</label>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <span id="priceValue" style="color: var(--primary-color); font-weight: 700; font-size: 1.2rem;">500€</span>
+                        <span style="color: #999; font-size: 0.8rem; float: right;">max. 500€</span>
+                    </div>
+                    <input type="range" id="priceFilter" min="0" max="500" value="500" class="form-range" oninput="document.getElementById('priceValue').innerText = this.value + '€'" onchange="filterProducts()" style="width: 100%; accent-color: var(--primary-color);">
+                </div>
+            </div>
+        </aside>
+
+        <!-- Product Grid -->
+        <div class="products-grid" id="productsContainer" style="flex-grow: 1;">
+            <partial name="_ProductList" model="Model" />
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function filterProducts() {
+            var categoryId = document.getElementById('categoryFilter').value;
+            var maxPrice = document.getElementById('priceFilter').value;
+            
+            console.log("Filtering - Category: " + categoryId + ", MaxPrice: " + maxPrice);
+
+            $.ajax({
+                url: '@Url.Action("Filter", "Shop")',
+                type: 'GET',
+                data: { 
+                    categoryId: categoryId, 
+                    maxPrice: maxPrice
+                },
+                success: function (result) {
+                    $('#productsContainer').html(result);
+                },
+                error: function(xhr, status, error) {
+                    console.error("Filter error:", error);
+                    // alert("Une erreur est survenue lors du filtrage.");
+                }
+            });
+        }
+    </script>
+}

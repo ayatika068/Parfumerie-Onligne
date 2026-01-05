@@ -1,0 +1,120 @@
+﻿@model IEnumerable<ParfumerieOnline.Models.Product>
+@{
+    ViewData["Title"] = "Accueil";
+}
+
+<div class="hero">
+    <div>
+        <h1>L'Élégance à Fleur de Peau</h1>
+        <p>Découvrez notre collection exclusive de parfums de luxe.</p>
+        <br>
+        <a asp-controller="Shop" asp-action="Index" class="btn">Voir la Boutique</a>
+    </div>
+</div>
+
+<!-- Brand Logo Slider -->
+<style>
+    .brand-slider {
+        background: white;
+        padding: 40px 0;
+        overflow: hidden;
+        position: relative;
+        white-space: nowrap;
+        border-bottom: 1px solid #f5f5f5;
+    }
+
+    .brand-track {
+        display: inline-flex;
+        align-items: center;
+        gap: 80px;
+        animation: slide-brands 30s linear infinite;
+        will-change: transform;
+    }
+
+    .brand-item {
+        flex-shrink: 0;
+        width: 150px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0.8;
+        transition: opacity 0.3s;
+    }
+
+    .brand-item:hover {
+        opacity: 1;
+    }
+
+    .brand-item img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        filter: grayscale(100%);
+    }
+
+    @@keyframes slide-brands {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); } 
+    }
+
+    /* Pause animation on hover for better UX */
+    .brand-slider:hover .brand-track {
+        animation-play-state: paused;
+    }
+
+    @@media (max-width: 768px) {
+        .brand-track {
+            gap: 40px;
+        }
+        .brand-item {
+            width: 100px;
+        }
+    }
+</style>
+
+<div class="brand-slider">
+    <div class="brand-track">
+        <!-- Original Set -->
+        <div class="brand-item"><img src="~/images/brands/brand1.png" alt="Brand 1"></div>
+        <div class="brand-item"><img src="~/images/brands/brand2.png" alt="Brand 2"></div>
+        <div class="brand-item"><img src="~/images/brands/brand3.jpg" alt="Brand 3"></div>
+        <div class="brand-item"><img src="~/images/brands/brand4.jpg" alt="Brand 4"></div>
+        <div class="brand-item"><img src="~/images/brands/brand1.png" alt="Brand 1"></div>
+        <div class="brand-item"><img src="~/images/brands/brand2.png" alt="Brand 2"></div>
+        
+        <!-- Duplicate Set for Infinite Loop -->
+        <div class="brand-item"><img src="~/images/brands/brand1.png" alt="Brand 1"></div>
+        <div class="brand-item"><img src="~/images/brands/brand2.png" alt="Brand 2"></div>
+        <div class="brand-item"><img src="~/images/brands/brand3.jpg" alt="Brand 3"></div>
+        <div class="brand-item"><img src="~/images/brands/brand4.jpg" alt="Brand 4"></div>
+        <div class="brand-item"><img src="~/images/brands/brand1.png" alt="Brand 1"></div>
+        <div class="brand-item"><img src="~/images/brands/brand2.png" alt="Brand 2"></div>
+    </div>
+</div>
+
+<div class="container">
+    <h2 style="text-align: center; margin-bottom: 2rem;">Nouveautés</h2>
+    
+    <div class="products-grid">
+        @foreach (var item in Model)
+        {
+            <div class="product-card">
+                @if (!string.IsNullOrEmpty(item.Image))
+                {
+                    <img src="~/uploads/@item.Image" alt="@item.Nom" class="product-image">
+                }
+                else
+                {
+                    <img src="https://via.placeholder.com/250x250?text=Parfum" alt="No Image" class="product-image">
+                }
+                
+                <div class="product-info">
+                    <h3>@item.Nom</h3>
+                    <p class="product-price">@item.Prix.ToString("C")</p>
+                    <a asp-controller="Shop" asp-action="Details" asp-route-id="@item.Id" class="btn">Voir Détails</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
